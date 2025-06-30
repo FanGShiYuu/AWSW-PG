@@ -1,4 +1,4 @@
-# A Potential Game-based Framework for Cooperative Driving at Mixed Un-signalized Intersections
+# Towards Cooperative Driving in Mixed-Traffic: An Adaptive Potential Game-Based Approach with Field Test Verification
 
 **[Shiyu Fang](https://tops.tongji.edu.cn/info/1033/1190.htm)**, [Peng Hang](https://tops.tongji.edu.cn/info/1031/1383.htm), [Jian Sun](https://tops.tongji.edu.cn/info/1031/1187.htm)  
 
@@ -6,25 +6,57 @@
 
 ## Abstract
 
-Connected Autonomous Vehicles (CAVs) technology is believed to enhance traffic efficiency and safety significantly. However, numerous accidents have demonstrated that the decision-making algorithm of CAV under highly complex environments has limitations, especially at mixed intersections. Considering the increased hazards posed by heterogeneous Human Driven Vehicles (HDVs) in real-world traffic, an Adaptive Weight Shapley Weighted Potential Game (AWSW-PG) is proposed to establish a cooperative driving framework for CAVs. Heterogeneous HDVs are modeled by a non-cooperative Bayesian game and utilized as background traffic. Then, the potential game that connects the individual reward and cluster reward generates the optimal cooperative solution by searching the Nash Equilibrium of the problem. Furthermore, the Shapley value is introduced to quantify the unsymmetrical impact of each vehicle. Finally, given the uncontrollable and unpredictable nature of HDVs, an adaptive weight method is formalized to adjust the estimation on HDVs dynamically. To evaluate the effectiveness and robustness of the proposed cooperative driving framework, three cases are conducted. Results demonstrate that the AWSW-PG framework exhibits good performance in terms of efficiency and safety under different rates of penetration. In addition, the quantification of vehicle impacts and dynamic adjustment of HDVs estimates have been proven capable of guaranteeing stability and efficiency during cooperation.
+Connected autonomous vehicles (CAVs), representing a significant advancement in autonomous driving technology, have the potential to greatly enhance traffic safety and efficiency through cooperative decision-making. However, existing methods often overlook the individual needs and heterogeneity of cooperation participants, making it difficult to transfer to environments where they coexist with Human-Driven Vehicles (HDVs).
+To address this challenge, this paper proposes an Adaptive Potential Game (APG) cooperative driving framework. First, the system utility function is established based on a general form of individual utility and its monotonic relationship, allowing for the simultaneous optimization of both individual and system objectives.  Second, the Shapley value is introduced to compute each vehicle’s marginal utility within the system, allowing its varying impact to be quantified. Finally, HDV preference estimation is dynamically refined by continuously comparing observed HDV behavior with APG’s estimated actions, leading to improvements in overall system safety and efficiency. 
+Ablation studies demonstrate that adaptively updating Shapley values and HDV preference estimation significantly improve cooperation success rates in mixed traffic. Comparative experiments further highlight APG’s advantages in safety and efficiency over other cooperative methods. Moreover, the approach’s applicability to real-world scenarios was validated through field tests.
 
-## Method Overview
+## Challenges
+Two fundamental limitations hinder current CAV frameworks in hybrid traffic. *System-Individual Decision Conflict*: While cooperative systems prioritize global objectives like traffic throughput, individual vehicles balance safety, comfort, and efficiency, leading to inherent conflicts between system-wide and individual decision-making perspectives. Studies have shown that rigid system-centric optimization, which overlooks individual needs, can lead to a 5% increase in accidents in mixed-autonomy environments, as HDVs resist sacrificing their preferences for collective gains. *Cooperation Participants Heterogeneity*: Cooperative models often assume HDVs are homogeneous, overlooking behavioral diversity driven by individual decision preferences and the unsymmetrical impact on the system caused by varying conflict relationships. As a result, when faced with real-world diverse driving styles and complex conflict topologies, cooperative strategies may become suboptimal. In some cases, introducing CAVs can unintentionally increase, rather than reduce, overall traffic inefficiency. In summary, the most pressing challenges in cooperative driving lie in optimizing system-level performance while ensuring individual equilibrium, and in real-time quantification and adaptation of cooperative strategies based on the diverse characteristics of participants.
 
-Firstly, based on our previous study, we formulate a non-cooperative Bayesian game to reproduce the heterogeneous HDVs decisions. Secondly, the individual reward and potential reward (cluster reward) are linked through Potential Games (PGs). Through rigorous derivation, we further demonstrate the uniqueness and global optimality of NE in PG. Then, the Shapley value is introduced to quantify the unsymmetrical impacts of vehicles. Finally, an adaptive weight method is proposed to dynamically correct the discrepancies between HDVs' real action and predicted action.  
+## Solutions
+
+To address this issue, this paper proposes an APG cooperative decision-making framework, as illustrated below. Constructing a system utility function that accommodates diverse individual needs is crucial for enhancing the applicability of cooperative methods in mixed-traffic environments. To this end, this paper starts from a general formulation of individual utility and, by establishing an equal potential relationship between individual and system utilities, the system utility function is derived from the bottom up. Under this design, when the system utility reaches its optimum, no cooperative participant can unilaterally alter their behavior to gain additional benefit, thereby achieving a game-theoretic equilibrium among individuals. In other words, the simultaneous optimization of individual and system utilities is achieved.
+
+Furthermore, this paper decomposes individual heterogeneity into two key aspects: the unsymmetrical impact on the system and the diversity of behavioral preferences. These characteristics are represented by two distinct sets of weights. The Shapley value is used to quantify each vehicle’s contribution by calculating its marginal utility, reflecting its relative impact on the system. In addition, the decision preference estimation for HDVs is continuously refined through a back-propagation approach that compares the optimal cooperative actions generated by APG with the observed behaviors of HDVs. This alignment gradually improves the consistency between theoretical optimal action and observed actions, thereby enhancing the safety and efficiency of the cooperative system.
 
 ![framework](./src/framework.png)
 
 ## Experiments
-Multiple experiments are conducted, including an ablation experiment on the Shapley value in a purely CAV environment, a comparison of efficiency and safety under different Rates of Penetration (ROP), and the significance test after heterogeneous HDVs involved. Here we focus on a supplementary explanation of the results of the study and present them in a more intuitive manner (especially via .MP4). For further knowledge acquisition, please refer to [arXiv]().
+To validate the effectiveness of the proposed APG framework, we first conduct an ablation study to compare success rates with and without adaptive updates under various penetration rates. We then benchmark its performance against other representative cooperative methods to demonstrate its advantages in safety and efficiency. Finally, we evaluate the framework through real-world vehicle tests in various scenarios at the Tongji Small Town (TJST).
 
 
-### Ablation experiment on the Shapley value
-In order to facilitate the reader to understand how Shapley value is constantly changing in the process of cooperation, we use the shade of color to represent the value of the Shapley value. More specifically, the closer the color of the vehicle is to purple, the higher its Shapley value is at this moment. This indicates that the vehicle currently has a greater impact on the system. Conversely, lighter colors indicate weaker impacts on the system. Additionally, each car's normalized Shapley value is displayed next to it. The cooperation case shown in Fig.5 in the paper is shown below  
+### Ablation Studies on APG
+In order to facilitate the reader to understand how the Shapley value is constantly changing in the process of cooperation, we use the shade of color to represent the value of the Shapley value. More specifically, the closer the color of the vehicle is to purple, the higher its Shapley value is at this moment. This indicates that the vehicle currently has a greater impact on the system. Conversely, lighter colors indicate weaker impacts on the system. Additionally, each car's normalized Shapley value is displayed next to it. The cooperation case shown in Fig.5 in the paper is shown below  
 
-<div align=center>
-| <video muted controls width=380> <source src="./src/ablation-case.mp4"  type="video/mp4"> </video> |
-</div>
 
+
+As shown in Tab.~\ref{tab: ablation studies}, incorporating the adaptive weight method significantly improves the success rate across all penetration levels, with an average increase of 7.5\% and a maximum improvement of 14\%. Even at a 100\% penetration rate—where no uncontrolled HDVs require real-time estimation updates—the success rate still rises by 3\%. This improvement is primarily due to Shapley value-based optimization, which prioritizes vehicles with a greater impact on the cooperative system, thereby enhancing overall efficiency and reducing inefficiencies.
+
+To further illustrate the effect of the adaptive weight method, we visualize a scenario with identical initial conditions. Fig.~\ref{fig: pg-ablation-without} depicts vehicle trajectories without adaptive weight updates. In this scenario, there are four CAVs, two aggressive HDVs, one normal HDV, and one conservative HDV. The number displayed in the upper right corner of each vehicle indicates its current speed.  
+
+\begin{figure*}[ht]
+  \begin{center}
+  \centerline{\includegraphics[width=6.5in]{pdf/pg-ablation-without.pdf}}
+  \caption{Vehicle trajectories without adaptive weight updates.}\label{fig: pg-ablation-without}
+  \end{center}
+  \vspace{-0.8cm}
+\end{figure*}
+
+In this case, CAV1 had already crossed the stop line and entered the intersection when HDV3 arrived. To optimize overall efficiency, the system prioritized CAV1’s passage, allowing it to maintain a desired speed of 10m/s. However, HDV3, driven by its preference to maximize personal efficiency, continued accelerating after entering the cooperative system, disregarding the broader system impact and ultimately causing a collision.
+
+Furthermore, Fig.~\ref{fig: pg-ablation-with} illustrates the results after applying the adaptive weight method. In this case, CAV1 and CAV2 detected that HDV3 did not decelerate as initially estimated by APG but instead maintained a relatively high speed. According to Eq.~\ref{eq: bp}, the system updated its estimation, recognizing that HDV3 had a stronger preference for efficiency. Consequently, during the optimization process, priority was given to maximizing HDV3's speed, prompting CAV1 and CAV2, which were in potential conflict with HDV3, to slow down. 
+
+\begin{figure*}[t]
+  \begin{center}
+  \centerline{\includegraphics[width=6.5in]{pdf/pg-ablation-with.pdf}}
+  \caption{Vehicle trajectories, speeds, and accelerations with adaptive weight updates.}\label{fig: pg-ablation-with}
+  \end{center}
+  \vspace{-0.8cm}
+\end{figure*}
+
+Moreover, during the interaction, HDV1 consistently exhibited more conservative behavior than initially estimated, leading APG to prioritize CAV2’s acceleration to clear the intersection efficiently. A notable pattern emerges when comparing estimated and observed actions: between 11-13s and 13-15s, APG’s predicted trajectory for HDV1 remains nearly identical. This occurs because, from a system perspective, where vehicle behaviors are controllable, earlier acceleration improves overall efficiency. In contrast, from an individual perspective, where other vehicles’ actions are uncertain, HDV1 tends to delay acceleration until absolute safety is ensured. This finding reinforces that when HDVs adhere to APG’s optimal cooperative solutions, both system efficiency and individual performance improve. This will be further validated in the next field tests.
+
+In summary, with the adaptive weight method, all vehicles successfully and efficiently navigated through the intersection without collisions.
 
 ### Comparison under different ROP
 In this subsection, we compare the baseline and AWSW-PG(T=1) from an aggregate point of view at first. The results indicate that the implementation of the adaptive weight method provides efficient improvement for collision avoidance. A specific case comparison is shown below  
