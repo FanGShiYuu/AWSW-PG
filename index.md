@@ -1,6 +1,6 @@
 # Towards Cooperative Driving in Mixed-Traffic: An Adaptive Potential Game-Based Approach with Field Test Verification
 
-**[Shiyu Fang](https://tops.tongji.edu.cn/info/1033/1190.htm)**, [Peng Hang](https://tops.tongji.edu.cn/info/1031/1383.htm), [Jian Sun](https://tops.tongji.edu.cn/info/1031/1187.htm)  
+**[Shiyu Fang](https://fangshiyuu.github.io/)**, [Peng Hang](https://tops.tongji.edu.cn/info/1031/1383.htm), [Jian Sun](https://tops.tongji.edu.cn/info/1031/1187.htm)  
 
 [Department of Traffic Engineering and Key Laboratory of Road and Traffic Engineering, Ministry of Education, Tongji University](https://tops.tongji.edu.cn/)  
 
