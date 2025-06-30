@@ -28,37 +28,102 @@ To validate the effectiveness of the proposed APG framework, we first conduct an
 ### Ablation Studies on APG
 In order to facilitate the reader to understand how the Shapley value is constantly changing in the process of cooperation, we use the shade of color to represent the value of the Shapley value. More specifically, the closer the color of the vehicle is to purple, the higher its Shapley value is at this moment. This indicates that the vehicle currently has a greater impact on the system. Conversely, lighter colors indicate weaker impacts on the system. Additionally, each car's normalized Shapley value is displayed next to it. The cooperation case shown in Fig.5 in the paper is shown below  
 
+![Table1](./src/Table1.png)
 
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/Table1.png" width="320px">)
 
-As shown in Tab.~\ref{tab: ablation studies}, incorporating the adaptive weight method significantly improves the success rate across all penetration levels, with an average increase of 7.5\% and a maximum improvement of 14\%. Even at a 100\% penetration rate—where no uncontrolled HDVs require real-time estimation updates—the success rate still rises by 3\%. This improvement is primarily due to Shapley value-based optimization, which prioritizes vehicles with a greater impact on the cooperative system, thereby enhancing overall efficiency and reducing inefficiencies.
+As shown in Table1, incorporating the adaptive weight method significantly improves the success rate across all penetration levels, with an average increase of 7.5% and a maximum improvement of 14%. Even at a 100% penetration rate—where no uncontrolled HDVs require real-time estimation updates—the success rate still rises by 3%. This improvement is primarily due to Shapley value-based optimization, which prioritizes vehicles with a greater impact on the cooperative system, thereby enhancing overall efficiency and reducing inefficiencies.
 
 To further illustrate the effect of the adaptive weight method, we visualize a scenario with identical initial conditions. Fig.~\ref{fig: pg-ablation-without} depicts vehicle trajectories without adaptive weight updates. In this scenario, there are four CAVs, two aggressive HDVs, one normal HDV, and one conservative HDV. The number displayed in the upper right corner of each vehicle indicates its current speed.  
 
-\begin{figure*}[ht]
-  \begin{center}
-  \centerline{\includegraphics[width=6.5in]{pdf/pg-ablation-without.pdf}}
-  \caption{Vehicle trajectories without adaptive weight updates.}\label{fig: pg-ablation-without}
-  \end{center}
-  \vspace{-0.8cm}
-\end{figure*}
+![pg-ablation-without](./src/pg-ablation-without_00.jpg)
 
-In this case, CAV1 had already crossed the stop line and entered the intersection when HDV3 arrived. To optimize overall efficiency, the system prioritized CAV1’s passage, allowing it to maintain a desired speed of 10m/s. However, HDV3, driven by its preference to maximize personal efficiency, continued accelerating after entering the cooperative system, disregarding the broader system impact and ultimately causing a collision.
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/pg-ablation-without_00.jpg" width="600px">)
 
-Furthermore, Fig.~\ref{fig: pg-ablation-with} illustrates the results after applying the adaptive weight method. In this case, CAV1 and CAV2 detected that HDV3 did not decelerate as initially estimated by APG but instead maintained a relatively high speed. According to Eq.~\ref{eq: bp}, the system updated its estimation, recognizing that HDV3 had a stronger preference for efficiency. Consequently, during the optimization process, priority was given to maximizing HDV3's speed, prompting CAV1 and CAV2, which were in potential conflict with HDV3, to slow down. 
+In this case, CAV1 had already crossed the stop line and entered the intersection when HDV3 arrived. To optimize overall efficiency, the system prioritized CAV1’s passage, allowing it to maintain a desired speed of 10ms. However, HDV3, driven by its preference to maximize personal efficiency, continued accelerating after entering the cooperative system, disregarding the broader system impact and ultimately causing a collision.
 
-\begin{figure*}[t]
-  \begin{center}
-  \centerline{\includegraphics[width=6.5in]{pdf/pg-ablation-with.pdf}}
-  \caption{Vehicle trajectories, speeds, and accelerations with adaptive weight updates.}\label{fig: pg-ablation-with}
-  \end{center}
-  \vspace{-0.8cm}
-\end{figure*}
+Furthermore, the Figure above illustrates the results after applying the adaptive weight method. In this case, CAV1 and CAV2 detected that HDV3 did not decelerate as initially estimated by APG but instead maintained a relatively high speed. According to back propagation method, the system updated its estimation, recognizing that HDV3 had a stronger preference for efficiency. Consequently, during the optimization process, priority was given to maximizing HDV3's speed, prompting CAV1 and CAV2, which were in potential conflict with HDV3, to slow down. 
+
+![pg-ablation-with](./src/pg-ablation-with_00.jpg)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/pg-ablation-with_00.jpg" width="600px">)
 
 Moreover, during the interaction, HDV1 consistently exhibited more conservative behavior than initially estimated, leading APG to prioritize CAV2’s acceleration to clear the intersection efficiently. A notable pattern emerges when comparing estimated and observed actions: between 11-13s and 13-15s, APG’s predicted trajectory for HDV1 remains nearly identical. This occurs because, from a system perspective, where vehicle behaviors are controllable, earlier acceleration improves overall efficiency. In contrast, from an individual perspective, where other vehicles’ actions are uncertain, HDV1 tends to delay acceleration until absolute safety is ensured. This finding reinforces that when HDVs adhere to APG’s optimal cooperative solutions, both system efficiency and individual performance improve. This will be further validated in the next field tests.
 
 In summary, with the adaptive weight method, all vehicles successfully and efficiently navigated through the intersection without collisions.
 
 ### Comparison under different ROP
+
+To further validate the effectiveness of the proposed APG in mixed-traffic cooperative scenarios, we compared it with several cooperative decision-making methods, including Projected-IDM (PIDM), iDFST, CGame, and Monte Carlo Tree Search (MCTS).
+
+#### Overall Performance
+The figure below illustrates the success rates of different methods, revealing two distinct trends. First, the success rates of PIDM, iDFST, and MCTS decline as penetration increases. A deeper analysis suggests that this is primarily due to a decrease in average efficiency at higher penetration levels, which will be discussed in detail later.
+
+![success_rate](./src/pg-success_rate_00.jpg)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/pg-success_rate_00.jpg" width="600px">)
+
+Here, we emphasize a counterintuitive observation: while it is commonly assumed that a higher proportion of CAVs should improve overall system performance, both real-world open-road data and our simulation results indicate the opposite. Instead of enhancing efficiency, current CAVs are often the main contributors to its decline, aligning with existing challenges in real-world deployments.
+
+
+In contrast, CGame and APG exhibit a completely different trend, with success rates steadily increasing as penetration rises. This is mainly because game-theoretic methods are based on rational decision-making logic, making them more adaptable in mixed traffic environments. However, the success rate of CGame remains lower than that of APG due to its overly strong assumption that all cooperative participants will act collaboratively, neglecting the various preferences of real-world human drivers. We will further explore this issue in the Safety Evaluation section.
+
+#### Safety Evaluation
+
+The success rate reflects the overall performance of different methods. To further evaluate the proposed APG framework in terms of safety and efficiency, we introduce collision rate and delay as key metrics. Table2 presents the performance of various methods under different penetration rates.  
+
+According to Table2, two key observations emerge from the results. First, the APG cooperative decision-making framework consistently achieves the lowest collision rate across all penetration levels. Notably, when the penetration rate exceeds 50%, the collision rate drops to zero. Second, at 100% penetration, the collision rate is zero for all methods. This result can be attributed to the absence of uncontrolled HDVs in the environment. Since all vehicles are CAVs following the same decision logic, ROW conflicts naturally do not occur.
+
+Additionally, several other findings can be drawn from Table2. In terms of both average and maximum collision rates, CGame performs the worst, even falling behind rule-based methods like iDFST. This further validates our earlier assertion that most existing game-theoretic methods assume participants are either fully cooperative or entirely competitive. As a result, their performance deteriorates in the presence of HDVs with various preferences. Furthermore, it highlights the rationale behind the proposed APG’s approach, which avoids making explicit assumptions about participants and instead seeks the equilibrium between the individual and the system. These results also indicate that APG better aligns with HDV decision-making logic and is more suitable for mixed-traffic environments.
+
+![Table2](./src/Table2.png)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/Table2.png" width="400px">)
+
+#### Efficiency Evaluation
+
+Delay is a key indicator of driving efficiency. The figure below illustrates the average delay performance of different methods across various penetration rates. It is evident that the proposed APG framework consistently achieves the lowest delay at all penetration levels. Notably, at 100% penetration, the delay is only 7.6s, with cooperative participants rarely needing to decelerate to a full stop. This demonstrates that incorporating individual utility into the modeling of system utility significantly enhances both individual and system-wide efficiency. Additionally, in CGame, as penetration increases, more vehicles participate in cooperation, leading to a reduction in average delay. 
+
+In contrast, PIDM, iDFST, and MCTS exhibit an entirely opposite trend in efficiency, where performance declines as penetration increases. At first glance, this seems contradictory to previous studies, but we find that most prior research used IDM as the background traffic model. This overly rigid design effectively forced HDVs to operate in a first-come, first-served manner, deviating significantly from real-world driving behavior. Consequently, when these methods are applied to environments with various HDVs, their performance trends differ drastically.
+
+![success_rate](./src/pg-success_rate_00.jpg)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/pg-delay_00.jpg" width="600px">)
+
+In summary, a comprehensive comparison of APG with other methods in terms of safety and efficiency shows that APG consistently outperforms other approaches across all penetration rates. This superiority primarily stems from its design, which does not impose assumptions on participant behavior. Instead, APG derives system utility step by step from a general formulation of individual utility. By leveraging the monotonic relationship between individual and system utility, it simultaneously achieves a balanced optimization, making it particularly suitable for mixed-traffic environments.
+
+### Real World Field Test
+Finally, to verify the feasibility of applying the proposed method in real-world autonomous driving systems, we conducted experiments in multiple scenarios at TJST using a virtual-reality testing system. The main workflow of the testing system is illustrated below. By mapping APG-driven real-field CAVs and virtual HDVs into the same digital space, real-time interaction and cooperation were achieved.
+
+![vr](./src/pg-vr_00.jpg)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/pg-vr_00.jpg" width="600px">)
+
+To demonstrate the capability of the proposed cooperative decision-making framework in enhancing the performance of existing autonomous driving systems, we first designed a relatively simple scenario involving two CAVs and one HDV. In this case, the CAVs were controlled by the decision-making algorithm of a specific autonomous driving startup, while the HDV was operated by an experienced human driver. The initial positions and vehicle trajectories are shown below.
+
+Additionally, we plotted speed versus time and the distance to destination versus time for all vehicles. The data shows that all three vehicles continuously accelerated during the first 8s. Around the 10s mark, their close proximity led to abrupt braking, resulting in a deadlock. Shortly after, the HDV driver accelerated and exited the intersection first, while CAV1 and CAV2 remained stationary. Eventually, at approximately 24s and 35s, the safety drivers of CAV1 and CAV2 had to manually intervene to clear the intersection. This case highlights the challenges faced by current CAVs when dealing with multi-vehicle conflict scenarios in mixed traffic. 
+
+![deadlock](./src/pg-field deadlock_00.jpg)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/pg-field deadlock_00.jpg" width="600px">)
+
+
+
+In contrast, the proposed APG cooperative decision-making method effectively addresses this challenge and remains robust in more complex scenarios. To further validate its effectiveness, we introduced three additional virtual HDVs (V-HDV) into the scenario shown below. Additionally, we equipped HDVs with onboard units (OBUs) to facilitate communication with CAVs and receive the optimal cooperative solutions generated by APG in real time. However, human drivers were not required to follow APG's suggested actions.
+
+During the first 3s of interaction, the system prioritizes overall efficiency by considering factors such as lane position and distance to the intersection. As a result, it is optimal for CAV2, V-HDV2, and V-HDV1 to pass first, leading to a higher acceleration for CAV2, while CAV1 and Connected HDV (C-HDV) receive lower acceleration values. However, the uncontrolled V-HDV3 does not recognize this strategy and continues to accelerate. After updating its preference estimation, the system identifies V-HDV3 is aggressive and intend to pass first. To prevent a collision, it adjusts the strategy by instructing CAV2 to decelerate until V-HDV3 clears the conflict point.  
+
+Subsequently, CAV2 sequentially passes the conflict points with CAV1 and C-HDV, with both vehicles accelerating in turn until they exit the intersection. During this process, the driver of the C-HDV confidently considers accelerating at the 2s mark. However, after just 1s, they quickly notice several vehicles approaching the intersection at high speeds, prompting a reevaluation of their decision. As a result, the driver opts to follow the APG-recommended speed instead.
+
+![deadlock](./src/pg-vr-test_00.jpg)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/pg-vr-test_00.jpg" width="600px">)
+
+A comparison between two figures shows that the proposed APG cooperative decision-making framework effectively handles various HDVs in mixed-traffic environments. By leveraging vehicle connectivity, it can transmit optimal cooperative actions to HDVs, guiding them from pursuing individual utility to achieving system-wide optimization, thereby demonstrating its applicability and superiority in real-world scenarios.
+
+
+
+
 In this subsection, we compare the baseline and AWSW-PG(T=1) from an aggregate point of view at first. The results indicate that the implementation of the adaptive weight method provides efficient improvement for collision avoidance. A specific case comparison is shown below  
 
 | <video muted controls width=380> <source src="./src/baseline-case1.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/AWSW-PG(T=1)-case1.mp4"  type="video/mp4"> </video> |
@@ -69,11 +134,6 @@ Thus, we have extended the planning horizon to 8 steps. Additionally, we also pr
 
 | <video muted controls width=380> <source src="./src/AWSW-PG(T=1)-case2.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/AWSW-PG(T=8)-case2.mp4"  type="video/mp4"> </video> |
 
-### Experiments with heterogeneous HDVs involved
-Considering that CAVs will continually mix with HDVs that possess various driving abilities, and styles in a long time. we further investigate our model by introducing heterogeneous human-driven vehicles into the background traffic. Specifically, we use orange, blue, and green to represent aggressive, neutral, and conservative drivers respectively (unknown information for connected autonomous vehicles). The transparency of colors indicates the discrepancy between actual actions and predicted actions. When the discrepancy between actual and predicted actions is relatively minor, HDV will be marked with a √ symbol.
-
-
-| <video muted controls width=380> <source src="./src/h-hdvs-case1.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/h-hdvs-case2.mp4"  type="video/mp4"> </video> |
 
 
 ## Citation
