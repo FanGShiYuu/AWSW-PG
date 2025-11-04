@@ -192,11 +192,23 @@ Secondly, we also visualized the reproduced results in Figure, where the gray li
 
 ![replay](./src/BNE-replay-simulation.png)
 
-[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/BNE-replay-simulation.png" width="600px">)
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/BNE-replay-simulation.png" width="400px">)
 
-### 2.Additional field test under high density traffic
+### 2.Additional field test under high-density traffic
 
+<div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+  <video width="30%" controls>
+    <source src="./src/roundabout.mp4" type="video/mp4">
+  </video>
 
+  <video width="30%" controls>
+    <source src="./src/roundabout.mp4.mp4" type="video/mp4">
+  </video>
+
+  <video width="30%" controls>
+    <source src="./src/roundabout.mp4.mp4" type="video/mp4">
+  </video>
+</div>
 
 
 
