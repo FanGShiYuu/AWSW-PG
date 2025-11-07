@@ -196,10 +196,17 @@ Secondly, we also visualized the reproduced results in Figure, where the gray li
 
 ### 2.Additional field test under high-density traffic
 
-| <video muted controls width=380> <source src="./src/turn.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/roundabout.mp4"  type="video/mp4"> </video>|
+| <video muted controls width=380> <source src="./src/turn2.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/roundabout2.mp4"  type="video/mp4"> </video>|
 
+### 3.Sensitivity analysis of reward weight
+To further address the reviewer’s concern, we provide below a comparative analysis of average success rate, collision rate, and delay under different weight combinations. Specifically, we introduce three additional configurations by varying the relative importance between efficiency and safety: the conservative type (high safety preference), the aggressive type (low safety preference), and the extremely aggressive type (very low safety preference).
+As shown in the results, the weight configuration used in our manuscript achieves the highest success rate of 99%. Although the conservative setting ensures zero collisions, it leads to a higher delay. Conversely, when safety preference is reduced to emphasize efficiency, the delay decreases but the collision rate rises significantly. Particularly in the extremely aggressive configuration, the excessive pursuit of efficiency results in a collision rate of up to 60%.
+
+![weight](./src/reward-weight.png)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/reward-weight.png" width="400px">)
 
 
 ## Contact
 
-If you have any questions, feel free to contact us (2111219@tongji.edu.cn).
+If you have any questions, feel free to contact us (fangshiyu@tongji.edu.cn).
