@@ -171,7 +171,7 @@ After dividing drivers into groups and generating feasible trajectories through 
 
 ![IRLAlgorithm](./src/IRLAlgorithm.png)
 
-[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/IRLAlgorithm.png" width="620px">)
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/IRLAlgorithm.png" width="400px">)
 
 After training, the reward weights of different driver groups can be calibrated through maximizing entropy and iterating, as shown below.
 
@@ -195,16 +195,41 @@ Secondly, we also visualized the reproduced results in Figure, where the gray li
 [](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/BNE-replay-simulation.png" width="400px">)
 
 ### 2.Additional field test under high-density traffic
+In the manuscript, to enhance the clarity of the presentation, we only selected one case with 2 CAVs, 1 HDV and 3 V-HDV for illustration. However, in reality, we conducted more field tests. In the following video, we present the actual operation of the model under a higher density.
 
-| <video muted controls width=380> <source src="./src/turn2.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/roundabout2.mp4"  type="video/mp4"> </video>|
+| <video muted controls width=380> <source src="./src/high-density-roundabout.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/high-density-turn.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/high-density-intersection.mp4"  type="video/mp4"> </video>|
 
-### 3.Sensitivity analysis of reward weight
-To further address the reviewer’s concern, we provide below a comparative analysis of average success rate, collision rate, and delay under different weight combinations. Specifically, we introduce three additional configurations by varying the relative importance between efficiency and safety: the conservative type (high safety preference), the aggressive type (low safety preference), and the extremely aggressive type (very low safety preference).
+### 3.Sensitivity analysis 
+
+#### Reward weight
+To further address the reviewer's concern, we provide below a comparative analysis of average success rate, collision rate, and delay under different weight combinations. Specifically, we introduce three additional configurations by varying the relative importance between efficiency and safety: the conservative type (high safety preference), the aggressive type (low safety preference), and the extremely aggressive type (very low safety preference).
 As shown in the results, the weight configuration used in our manuscript achieves the highest success rate of 99%. Although the conservative setting ensures zero collisions, it leads to a higher delay. Conversely, when safety preference is reduced to emphasize efficiency, the delay decreases but the collision rate rises significantly. Particularly in the extremely aggressive configuration, the excessive pursuit of efficiency results in a collision rate of up to 60%.
 
 ![weight](./src/reward-weight.png)
 
 [](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/reward-weight.png" width="400px">)
+
+#### Ablation study
+Figure below illustrates the variations in delay. Compared with other methods in Section 5.3 (such as PIDM, MCTS), the differences in delay observed in the ablation experiments are minimal. Across multiple penetration rates, the delays of different module combinations fluctuate slightly, and on average, the overall difference is less than 1s, indicating that the variation is not significant. Further analysis reveals that the changes in success rate are primarily driven by differences in the safety component.
+
+![ablation-delay](./src/ablation-delay.png)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/ablation-delay.png" width="400px">)
+
+Table below presents the collision rates of each method. The results indicate that when adaptive Shapley value updates are removed, the collision rate remains close to that of the full APG method. In contrast, when the HDV preference estimation with backward update is removed, collision rates increase sharply across all penetration rates.
+
+![ablation-collision](./src/ablation-collision.png)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/ablation-collision.png" width="400px">)
+
+### 4.Comfort analysis
+Considering that comfort is closely related to the driving experience and plays a critical role in real-world operations, we further compared the proposed APG framework with a commercial autonomous driving algorithm developed by a startup company in our real-vehicle experiments. We believe that this real-world comparison provides a more reliable and convincing assessment of the comfort performance of different methods.
+
+![jerk-distribution](./src/jerk-distribution.png)
+
+[](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/jerk-distribution.png" width="400px">)
+
+As shown in Figure, the jerk (rate of change of acceleration) distribution of the proposed APG framework is more concentrated to the commercial algorithm. This indicates that the proposed vehicle-to-vehicle coordination not only enhances safety and efficiency but also effectively suppresses sudden acceleration fluctuations, thereby improving ride comfort. Considering the space limitations of the manuscript, a detailed explanation and additional plots related to comfort evaluation have been included in the supplementary materials available on the project website
 
 
 ## Contact
