@@ -194,12 +194,9 @@ Secondly, we also visualized the reproduced results in Figure, where the gray li
 
 [](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/BNE-replay-simulation.png" width="400px">)
 
-### 2.Additional field test under high-density traffic
-In the manuscript, to enhance the clarity of the presentation, we only selected one case with 2 CAVs, 1 HDV and 3 V-HDV for illustration. However, in reality, we conducted more field tests. In the following video, we present the actual operation of the model under a higher density.
+type="video/mp4"> </video>|
 
-| <video muted controls width=380> <source src="./src/high-density-roundabout.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/high-density-turn.mp4"  type="video/mp4"> </video> <video muted controls width=380> <source src="./src/high-density-intersection.mp4"  type="video/mp4"> </video>|
-
-### 3.Sensitivity analysis 
+### 2.Sensitivity analysis 
 
 #### Reward weight
 To further address the reviewer's concern, we provide below a comparative analysis of average success rate, collision rate, and delay under different weight combinations. Specifically, we introduce three additional configurations by varying the relative importance between efficiency and safety: the conservative type (high safety preference), the aggressive type (low safety preference), and the extremely aggressive type (very low safety preference).
@@ -222,7 +219,7 @@ Table below presents the collision rates of each method. The results indicate th
 
 [](<img src="https://github.com/FanGShiYuu/AWSW-PG/blob/pages/src/ablation-collision.png" width="400px">)
 
-### 4.Comfort analysis
+### 3.Comfort analysis
 Considering that comfort is closely related to the driving experience and plays a critical role in real-world operations, we further compared the proposed APG framework with a commercial autonomous driving algorithm developed by a startup company in our real-vehicle experiments. We believe that this real-world comparison provides a more reliable and convincing assessment of the comfort performance of different methods.
 
 ![jerk-distribution](./src/jerk-distribution.png)
